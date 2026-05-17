@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brain Arcade — 15 Classic Games</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E%F0%9F%8E%AE%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-icon">🎮</span>
+        <h1>Brain Arcade</h1>
+        <span class="brand-sub">15 classic puzzle &amp; theory games</span>
+      </div>
+      <div class="timers">
+        <div class="timer-block">
+          <span class="timer-label">Game</span>
+          <span id="game-timer" class="timer-value">00:00</span>
+        </div>
+        <div class="timer-block total">
+          <span class="timer-label">Session</span>
+          <span id="total-timer" class="timer-value">00:00</span>
+        </div>
+        <div class="mode-toggle" role="group" aria-label="Difficulty">
+          <button data-mode="quick" class="mode-btn active">Quick</button>
+          <button data-mode="advanced" class="mode-btn">Advanced</button>
+        </div>
+      </div>
+    </header>
+
+    <nav class="tabs" id="tabs" aria-label="Games"></nav>
+
+    <main id="game-area" class="game-area" tabindex="-1"></main>
+
+    <footer class="footer">
+      <span>Tip: each game adapts to <b>Quick</b> (~5 min) or <b>Advanced</b> (~10–15 min) mode.</span>
+    </footer>
+  </div>
+
+  <div id="celebration" class="celebration hidden" aria-hidden="true">
+    <div class="confetti" id="confetti"></div>
+    <div class="cheer-stage">
+      <div class="cheer-character elephant">
+        <div class="char-body">🐘</div>
+        <div class="speech">You did it!</div>
+      </div>
+      <div class="cheer-character pig">
+        <div class="char-body">🐷</div>
+        <div class="speech">Squee-tastic!</div>
+      </div>
+      <div class="cheer-character bear">
+        <div class="char-body">🐻</div>
+        <div class="speech">Bear-illiant!</div>
+      </div>
+      <div class="cheer-banner">🎉 Victory! 🎉</div>
+      <div class="cheer-stats" id="cheer-stats"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
