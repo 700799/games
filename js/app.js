@@ -17,23 +17,35 @@ import { centipede } from './games/centipede.js';
 import { publicGoods } from './games/public-goods.js';
 import { battleOfSexes } from './games/battle-of-sexes.js';
 import { tsp } from './games/traveling-salesman.js';
+import { wordle } from './games/wordle.js';
+import { anagrams } from './games/anagrams.js';
+import { chessPuzzle } from './games/chess-puzzle.js';
+import { chineseCheckers } from './games/chinese-checkers.js';
+import { mahjong } from './games/mahjong.js';
+import { donutHunt } from './games/donut-hunt.js';
 
 export const GAMES = [
-  { id: 'hanoi',         icon: '🗼', name: 'Tower of Hanoi',       mount: hanoi },
-  { id: 'fifteen',       icon: '🧩', name: '15-Puzzle',            mount: fifteen },
-  { id: 'water-jug',     icon: '🪣', name: 'Water Jug',            mount: waterJug },
-  { id: 'peg-solitaire', icon: '🟠', name: 'Peg Solitaire',        mount: pegSolitaire },
-  { id: 'lights-out',    icon: '💡', name: 'Lights Out',           mount: lightsOut },
-  { id: 'nim',           icon: '⚫', name: 'Nim',                  mount: nim },
-  { id: 'misere-nim',    icon: '⚪', name: 'Misère Nim',           mount: misereNim },
-  { id: 'prisoner',      icon: '🤝', name: "Prisoner's Dilemma",   mount: prisoner },
-  { id: 'stag-hunt',     icon: '🦌', name: 'Stag Hunt',            mount: stagHunt },
-  { id: 'hawk-dove',     icon: '🦅', name: 'Hawk–Dove',            mount: hawkDove },
-  { id: 'ultimatum',     icon: '💰', name: 'Ultimatum',            mount: ultimatum },
-  { id: 'centipede',     icon: '🐛', name: 'Centipede',            mount: centipede },
-  { id: 'public-goods',  icon: '🏛️', name: 'Public Goods',         mount: publicGoods },
-  { id: 'battle-sexes',  icon: '🎭', name: 'Battle of the Sexes',  mount: battleOfSexes },
-  { id: 'tsp',           icon: '🗺️', name: 'Traveling Salesman',   mount: tsp },
+  { id: 'hanoi',           icon: '🗼', name: 'Tower of Hanoi',       mount: hanoi },
+  { id: 'fifteen',         icon: '🧩', name: '15-Puzzle',            mount: fifteen },
+  { id: 'water-jug',       icon: '🪣', name: 'Water Jug',            mount: waterJug },
+  { id: 'peg-solitaire',   icon: '🟠', name: 'Peg Solitaire',        mount: pegSolitaire },
+  { id: 'lights-out',      icon: '💡', name: 'Lights Out',           mount: lightsOut },
+  { id: 'nim',             icon: '⚫', name: 'Nim',                  mount: nim },
+  { id: 'misere-nim',      icon: '⚪', name: 'Misère Nim',           mount: misereNim },
+  { id: 'prisoner',        icon: '🤝', name: "Prisoner's Dilemma",   mount: prisoner },
+  { id: 'stag-hunt',       icon: '🦌', name: 'Stag Hunt',            mount: stagHunt },
+  { id: 'hawk-dove',       icon: '🦅', name: 'Hawk–Dove',            mount: hawkDove },
+  { id: 'ultimatum',       icon: '💰', name: 'Ultimatum',            mount: ultimatum },
+  { id: 'centipede',       icon: '🐛', name: 'Centipede',            mount: centipede },
+  { id: 'public-goods',    icon: '🏛️', name: 'Public Goods',         mount: publicGoods },
+  { id: 'battle-sexes',    icon: '🎭', name: 'Battle of the Sexes',  mount: battleOfSexes },
+  { id: 'tsp',             icon: '🗺️', name: 'Traveling Salesman',   mount: tsp },
+  { id: 'wordle',          icon: '🟩', name: 'Wordle',               mount: wordle },
+  { id: 'anagrams',        icon: '🔤', name: 'Anagrams',             mount: anagrams },
+  { id: 'chess',           icon: '♟', name: 'Chess Puzzles',         mount: chessPuzzle },
+  { id: 'chinese-checkers',icon: '⭐', name: 'Chinese Checkers',     mount: chineseCheckers },
+  { id: 'mahjong',         icon: '🀄', name: 'Mahjong',              mount: mahjong },
+  { id: 'donut-hunt',      icon: '🍩', name: 'Donut Hunt',           mount: donutHunt },
 ];
 
 const state = {
