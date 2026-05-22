@@ -159,33 +159,209 @@ body {
 
 /* ----------------- Tower of Hanoi ----------------- */
 .hanoi-board {
-  display: flex; gap: 24px; justify-content: center; padding: 30px 0;
+  display: flex; gap: 12px; padding: 20px 8px;
   background: linear-gradient(180deg, transparent, rgba(0,0,0,.2));
   border-radius: 14px;
+  max-width: 720px; margin: 0 auto;
 }
 .hanoi-peg {
-  position: relative; width: 220px; height: 280px;
+  position: relative; flex: 1 1 0; min-width: 0; height: 280px;
   display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-  cursor: pointer;
-  border-radius: 12px;
-  transition: background .2s;
+  cursor: pointer; border-radius: 12px;
+  transition: background .2s, outline-color .2s;
+  outline: 2px dashed transparent; outline-offset: -2px;
+  -webkit-tap-highlight-color: transparent;
 }
 .hanoi-peg::before {
   content: ''; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
-  width: 14px; height: 260px; background: linear-gradient(180deg,#7c5a36,#3e2a16);
-  border-radius: 6px;
+  width: 12px; height: 260px; background: linear-gradient(180deg,#7c5a36,#3e2a16);
+  border-radius: 6px; z-index: 1;
 }
 .hanoi-peg::after {
-  content: ''; position: absolute; left: 50%; bottom: -6px; transform: translateX(-50%);
-  width: 220px; height: 14px; background: linear-gradient(180deg,#5d3f22,#2c1c0d);
+  content: ''; position: absolute; left: 0; bottom: -6px;
+  width: 100%; height: 14px; background: linear-gradient(180deg,#5d3f22,#2c1c0d);
   border-radius: 6px;
 }
-.hanoi-peg.selected { background: rgba(255,209,102,.12); outline: 2px dashed var(--accent); }
-.hanoi-disk {
-  height: 22px; border-radius: 16px; margin-bottom: 4px; position: relative; z-index: 2;
-  box-shadow: inset 0 -4px 0 rgba(0,0,0,.2), 0 2px 6px rgba(0,0,0,.4);
-  display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700;
+.hanoi-peg.source {
+  background: rgba(239,71,111,.15);
+  outline-color: var(--accent-2);
+  animation: hanoi-pulse 1.2s ease-in-out infinite;
 }
+.hanoi-peg.target-hint {
+  background: rgba(6,214,160,.10);
+  outline-color: var(--accent-3);
+}
+@keyframes hanoi-pulse {
+  0%, 100% { background: rgba(239,71,111,.15); }
+  50% { background: rgba(239,71,111,.30); }
+}
+.peg-label {
+  position: absolute; top: 8px; left: 0; right: 0; text-align: center;
+  font-size: 12px; color: var(--text-dim); font-weight: 600; letter-spacing: 1px;
+  pointer-events: none;
+}
+.hanoi-disk {
+  height: 24px; border-radius: 16px; margin-bottom: 4px; position: relative; z-index: 2;
+  box-shadow: inset 0 -4px 0 rgba(0,0,0,.2), 0 2px 6px rgba(0,0,0,.4);
+  display: flex; align-items: center; justify-content: center; color: #fff;
+  font-weight: 700; font-size: 13px;
+  transition: transform .15s;
+}
+.hanoi-disk.lifted { transform: translateY(-30px) scale(1.05); }
+
+/* ----------------- Wordle ----------------- */
+.wordle-grid {
+  display: grid; gap: 6px; margin: 12px auto; width: max-content;
+}
+.wordle-row { display: flex; gap: 6px; }
+.wordle-cell {
+  width: 56px; height: 56px; border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 28px; text-transform: uppercase;
+  background: var(--panel); color: var(--text);
+  transition: transform .25s, background .3s, border-color .3s, color .3s;
+}
+.wordle-cell.filled { border-color: #5b67a8; transform: scale(1.05); }
+.wordle-cell.green  { background: #538d4e; border-color: #538d4e; color: #fff; }
+.wordle-cell.yellow { background: #b59f3b; border-color: #b59f3b; color: #fff; }
+.wordle-cell.gray   { background: #3a3a3c; border-color: #3a3a3c; color: #fff; }
+.wordle-keyboard { display: flex; flex-direction: column; gap: 6px; align-items: center; margin-top: 12px; }
+.wordle-krow { display: flex; gap: 5px; }
+.wordle-key {
+  min-width: 36px; padding: 12px 8px; border-radius: 6px;
+  background: #818384; color: #fff; font-weight: 700; font-size: 14px;
+  border: 0; cursor: pointer; text-transform: uppercase;
+  -webkit-tap-highlight-color: transparent;
+}
+.wordle-key.wide { min-width: 60px; font-size: 11px; }
+.wordle-key.green  { background: #538d4e; }
+.wordle-key.yellow { background: #b59f3b; }
+.wordle-key.gray   { background: #3a3a3c; }
+.wordle-key:active { transform: scale(.94); }
+
+/* ----------------- Anagrams ----------------- */
+.anagrams-letters {
+  display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+  padding: 12px; background: rgba(0,0,0,.18); border-radius: 12px;
+}
+.anagram-letter {
+  width: 48px; height: 48px; border-radius: 10px;
+  background: linear-gradient(180deg, var(--accent), #f0a830);
+  color: #1a1a1a; font-weight: 800; font-size: 22px; text-transform: uppercase;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; user-select: none;
+  box-shadow: 0 4px 0 #b87a16;
+  transition: transform .1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.anagram-letter:active { transform: translateY(2px); box-shadow: 0 2px 0 #b87a16; }
+.anagram-letter.used { opacity: 0.3; pointer-events: none; }
+.anagrams-input {
+  display: flex; gap: 6px; justify-content: center;
+  margin: 12px 0; min-height: 50px;
+  border-bottom: 2px dashed var(--border); padding-bottom: 10px;
+}
+.anagram-tile {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: var(--panel-2); color: var(--text);
+  font-weight: 800; font-size: 20px; text-transform: uppercase;
+  display: flex; align-items: center; justify-content: center;
+}
+.anagrams-found {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 4px; max-height: 200px; overflow-y: auto;
+  background: rgba(0,0,0,.15); border-radius: 10px; padding: 8px;
+}
+.anagrams-found .word {
+  background: rgba(6,214,160,.18); color: var(--accent-3);
+  padding: 4px 6px; border-radius: 6px; font-size: 13px;
+  text-align: center; text-transform: uppercase; font-weight: 700;
+}
+
+/* ----------------- Chess ----------------- */
+.chess-board {
+  display: grid; grid-template-columns: repeat(8, 1fr);
+  width: min(480px, 90vw); aspect-ratio: 1; margin: 0 auto;
+  border: 3px solid #4a3322; border-radius: 8px; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.chess-sq {
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(24px, 6vw, 44px); cursor: pointer; position: relative;
+  user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.chess-sq.light { background: #f0d9b5; color: #000; }
+.chess-sq.dark  { background: #b58863; color: #000; }
+.chess-sq.from  { background: #f7ec74 !important; }
+.chess-sq.to    { background: #6dd17f !important; }
+.chess-sq.hint::after {
+  content: ''; position: absolute; width: 30%; height: 30%;
+  background: rgba(0,0,0,.25); border-radius: 50%;
+}
+.chess-sq.bad { animation: chess-shake 0.4s; }
+@keyframes chess-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+.chess-piece.black { color: #000; }
+.chess-piece.white { color: #fff; text-shadow: 0 0 2px #000, 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000; }
+.puzzle-prog { display: flex; gap: 4px; flex-wrap: wrap; margin: 8px 0; }
+.puzzle-dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--panel); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; font-size: 11px;
+}
+.puzzle-dot.solved { background: var(--accent-3); color: #042823; }
+.puzzle-dot.current { background: var(--accent); color: #1a1a1a; outline: 2px solid var(--accent); }
+
+/* ----------------- Chinese Checkers ----------------- */
+.cc-wrap { display: flex; justify-content: center; padding: 12px; }
+.cc-svg { width: 100%; max-width: 560px; height: auto; user-select: none; }
+.cc-cell {
+  fill: #2a3473; stroke: #5b67a8; stroke-width: 1.5;
+  cursor: pointer; transition: fill .15s;
+}
+.cc-cell:hover { fill: #4a5a99; }
+.cc-cell.selected { fill: var(--accent); stroke: var(--accent-2); stroke-width: 3; }
+.cc-cell.legal { fill: #06d6a050; stroke: var(--accent-3); stroke-width: 2; }
+.cc-piece-1 { fill: #ef476f; stroke: #1a1a1a; stroke-width: 1.5; pointer-events: none; }
+.cc-piece-2 { fill: #06d6a0; stroke: #1a1a1a; stroke-width: 1.5; pointer-events: none; }
+.cc-zone-1 { fill: rgba(239,71,111,.10); }
+.cc-zone-2 { fill: rgba(6,214,160,.10); }
+
+/* ----------------- Mahjong ----------------- */
+.mj-wrap {
+  position: relative; margin: 12px auto; max-width: 100%;
+  overflow-x: auto; padding: 10px;
+  background: linear-gradient(135deg, #1d4f3d, #0d2b22); border-radius: 14px;
+}
+.mj-board { position: relative; margin: 0 auto; }
+.mj-tile {
+  position: absolute; border-radius: 6px;
+  background: linear-gradient(180deg, #fffce8, #e0d6a0);
+  border: 2px solid #6b5a30; box-shadow: 2px 2px 4px rgba(0,0,0,.3);
+  display: flex; align-items: center; justify-content: center;
+  color: #1a1a1a; font-weight: 800;
+  cursor: pointer; user-select: none;
+  transition: transform .1s, box-shadow .1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mj-tile.blocked { filter: brightness(0.6); cursor: not-allowed; }
+.mj-tile.selected {
+  background: linear-gradient(180deg, #c1d8ff, #5b8cd9);
+  border-color: var(--accent-2);
+  box-shadow: 0 0 12px rgba(239,71,111,.6), 2px 2px 4px rgba(0,0,0,.3);
+}
+.mj-tile.hint { animation: mj-hint 1s ease-in-out 3; }
+@keyframes mj-hint {
+  0%, 100% { box-shadow: 2px 2px 4px rgba(0,0,0,.3); }
+  50% { box-shadow: 0 0 14px var(--accent), 2px 2px 4px rgba(0,0,0,.3); }
+}
+.mj-tile .face-red    { color: #c0392b; }
+.mj-tile .face-green  { color: #1d6f42; }
+.mj-tile .face-blue   { color: #1f4287; }
+.mj-tile .face-orange { color: #c46410; }
 
 /* ----------------- 15-Puzzle ----------------- */
 .puzzle-grid {
@@ -378,4 +554,106 @@ canvas#tsp-canvas { display: block; width: 100%; background: #0f163a; border-rad
 @keyframes confetti-fall {
   0%   { transform: translateY(-20px) rotate(0deg); opacity: 1;}
   100% { transform: translateY(110vh) rotate(720deg); opacity: 0.9;}
+}
+
+/* ============================================================
+   Mobile responsiveness — keep games tappable on small screens.
+   ============================================================ */
+.btn, .mode-btn, .tab, .wordle-key, .anagram-letter,
+.puzzle-tile, .light, .nim-stone, .peg-cell, .mj-tile, .chess-sq {
+  touch-action: manipulation;
+}
+.game-toolbar select, .game-toolbar input { font-size: 16px; } /* prevent iOS zoom */
+
+@media (max-width: 760px) {
+  .topbar {
+    flex-direction: column; gap: 10px; align-items: stretch;
+    padding: 10px 12px;
+  }
+  .brand { justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .brand h1 { font-size: 18px; }
+  .brand-sub { display: none; }
+  .timers { justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .timer-block { min-width: 70px; padding: 4px 10px; }
+  .timer-value { font-size: 15px; }
+  .mode-btn { padding: 6px 12px; min-height: 38px; }
+
+  .tabs {
+    overflow-x: auto; flex-wrap: nowrap; padding: 8px 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .tab { white-space: nowrap; flex-shrink: 0; padding: 8px 12px; min-height: 38px; }
+
+  .game-area { padding: 12px 8px; }
+  .game-shell { padding: 14px 10px; border-radius: 10px; }
+  .game-title { font-size: 18px; }
+  .game-desc { font-size: 13px; }
+  .game-toolbar { padding: 8px; gap: 6px; }
+  .btn { padding: 10px 14px; min-height: 40px; font-size: 13px; }
+
+  /* Hanoi: shrink board so all 3 pegs fit on phone screens */
+  .hanoi-board { gap: 6px; padding: 14px 4px; }
+  .hanoi-peg { height: 240px; }
+  .hanoi-peg::before { height: 220px; }
+  .hanoi-disk { height: 20px; font-size: 11px; }
+
+  /* 15-puzzle */
+  .puzzle-tile { width: 60px; height: 60px; font-size: 22px; }
+
+  /* Water jug */
+  .jugs { gap: 14px; padding: 14px 4px; }
+  .jug { width: 80px; height: 160px; }
+  .jug-actions .btn { padding: 6px 8px; font-size: 12px; }
+
+  /* Peg solitaire */
+  .peg-cell { width: 38px; height: 38px; }
+  .peg-board { gap: 4px; }
+
+  /* Lights Out */
+  .light { width: 52px; height: 52px; }
+  .lights-grid { gap: 5px; }
+
+  /* Nim stones */
+  .nim-stone { width: 22px; height: 22px; }
+  .nim-heap { flex-wrap: wrap; }
+  .nim-label { width: 64px; font-size: 12px; }
+
+  /* GT panels stack */
+  .gt-panel { grid-template-columns: 1fr; }
+  .payoff-table { font-size: 12px; }
+  .payoff-table th, .payoff-table td { padding: 4px 5px; }
+
+  /* Centipede */
+  .centipede-step { width: 40px; height: 40px; font-size: 11px; }
+
+  /* Wordle */
+  .wordle-cell { width: 44px; height: 44px; font-size: 22px; }
+  .wordle-key { min-width: 28px; padding: 12px 4px; font-size: 13px; }
+  .wordle-key.wide { min-width: 48px; }
+
+  /* Anagrams */
+  .anagram-letter { width: 40px; height: 40px; font-size: 18px; }
+  .anagram-tile { width: 32px; height: 32px; font-size: 16px; }
+
+  /* TSP canvas already responsive via width:100% */
+}
+
+@media (max-width: 380px) {
+  .puzzle-tile { width: 52px; height: 52px; font-size: 19px; }
+  .hanoi-peg { height: 210px; }
+  .light { width: 44px; height: 44px; }
+  .peg-cell { width: 32px; height: 32px; }
+  .wordle-cell { width: 38px; height: 38px; font-size: 18px; }
+  .wordle-key { min-width: 22px; padding: 10px 2px; font-size: 11px; }
+  .wordle-key.wide { min-width: 38px; }
+}
+
+/* Celebration overlay tweaks on small screens */
+@media (max-width: 600px) {
+  .cheer-stage { height: 380px; padding: 16px; }
+  .cheer-character { width: 100px; }
+  .cheer-character .char-body { font-size: 70px; }
+  .cheer-banner { font-size: 26px; }
+  .cheer-stats { font-size: 12px; padding: 0 8px; }
 }
