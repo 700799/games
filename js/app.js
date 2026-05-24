@@ -20,9 +20,11 @@ import { tsp } from './games/traveling-salesman.js';
 import { wordle } from './games/wordle.js';
 import { anagrams } from './games/anagrams.js';
 import { chessPuzzle } from './games/chess-puzzle.js';
+import { speedChess } from './games/speed-chess.js';
 import { chineseCheckers } from './games/chinese-checkers.js';
 import { mahjong } from './games/mahjong.js';
 import { donutHunt } from './games/donut-hunt.js';
+import { mastermind } from './games/mastermind.js';
 
 export const GAMES = [
   { id: 'hanoi',           icon: '🗼', name: 'Tower of Hanoi',       mount: hanoi },
@@ -43,9 +45,11 @@ export const GAMES = [
   { id: 'wordle',          icon: '🟩', name: 'Wordle',               mount: wordle },
   { id: 'anagrams',        icon: '🔤', name: 'Anagrams',             mount: anagrams },
   { id: 'chess',           icon: '♟', name: 'Chess Puzzles',         mount: chessPuzzle },
+  { id: 'speed-chess',     icon: '⏱️', name: 'Speed Mates',          mount: speedChess },
   { id: 'chinese-checkers',icon: '⭐', name: 'Chinese Checkers',     mount: chineseCheckers },
   { id: 'mahjong',         icon: '🀄', name: 'Mahjong',              mount: mahjong },
   { id: 'donut-hunt',      icon: '🍩', name: 'Donut Hunt',           mount: donutHunt },
+  { id: 'mastermind',      icon: '🎯', name: 'Mastermind',           mount: mastermind },
 ];
 
 const state = {
