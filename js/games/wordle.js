@@ -2,11 +2,12 @@ import { el, header, toolbar, status, setStatus } from '../helpers.js';
 import { celebrate } from '../celebration.js';
 import { timers } from '../timer.js';
 import { FIVE_SET, FIVE_COMMON } from '../data/words.js';
+import { rngFor } from '../rng.js';
 
-export function wordle(shell, { getMode }) {
+export function wordle(shell, { getMode, seed = null, onResult = null }) {
   const mode = getMode();
   const MAX_TRIES = mode === 'advanced' ? 6 : 7;
-  const target = FIVE_COMMON[Math.floor(Math.random() * FIVE_COMMON.length)].toUpperCase();
+  let target;
 
   header(shell, {
     title: '🟩 Wordle',
@@ -26,6 +27,9 @@ export function wordle(shell, { getMode }) {
 
   let guesses, current, won, over, keyState;
   function reset() {
+    // Seeded → same word each reset (fair for challenges); else a fresh word.
+    const rng = rngFor(seed);
+    target = FIVE_COMMON[Math.floor(rng() * FIVE_COMMON.length)].toUpperCase();
     guesses = []; current = ''; won = false; over = false;
     keyState = {};
     renderGrid(); renderKeyboard();
@@ -131,7 +135,8 @@ export function wordle(shell, { getMode }) {
       won = true; over = true;
       timers.stopGame();
       setStatus(s, `Got it! "${target}" in ${guesses.length} guess${guesses.length===1?'':'es'}.`, 'good');
-      celebrate({
+      if (onResult) onResult({ solved: true, moves: guesses.length, timeMs: timers.getGameElapsed(), score: 0 });
+      else celebrate({
         gameName: 'Wordle',
         gameTimeMs: timers.getGameElapsed(),
         totalTimeMs: timers.getTotalElapsed(),
@@ -140,6 +145,7 @@ export function wordle(shell, { getMode }) {
     } else if (guesses.length >= MAX_TRIES) {
       over = true;
       setStatus(s, `Out of guesses. The word was <b>${target}</b>.`, 'bad');
+      if (onResult) onResult({ solved: false, moves: guesses.length, timeMs: timers.getGameElapsed(), score: 0 });
     } else {
       setStatus(s, `${MAX_TRIES - guesses.length} guess${MAX_TRIES - guesses.length===1?'':'es'} left.`);
     }

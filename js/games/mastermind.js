@@ -1,6 +1,7 @@
 import { el, header, toolbar, status, setStatus } from '../helpers.js';
 import { celebrate } from '../celebration.js';
 import { timers } from '../timer.js';
+import { rngFor } from '../rng.js';
 
 // Mastermind: crack the hidden colour code. Feedback after each guess —
 // a black key peg for each peg of the right colour AND position, a white key
@@ -16,7 +17,7 @@ const PALETTE = [
   { id: 7, name: 'cyan',   css: '#48cae4' },
 ];
 
-export function mastermind(shell, { getMode }) {
+export function mastermind(shell, { getMode, seed = null, onResult = null }) {
   const mode = getMode();
   const SLOTS = mode === 'advanced' ? 5 : 4;
   const COLORS = mode === 'advanced' ? 8 : 6;
@@ -50,7 +51,9 @@ export function mastermind(shell, { getMode }) {
   let code, guesses, current, row, over, won;
 
   function reset() {
-    code = Array.from({ length: SLOTS }, () => Math.floor(Math.random() * COLORS));
+    // Seeded → identical code on every reset (fair for challenges); else random.
+    const rng = rngFor(seed);
+    code = Array.from({ length: SLOTS }, () => Math.floor(rng() * COLORS));
     guesses = []; current = []; row = 0; over = false; won = false;
     renderBoard(); renderPalette();
     setStatus(s, `Guess the ${SLOTS}-colour code. ${MAX_GUESSES} tries.`);
@@ -143,7 +146,8 @@ export function mastermind(shell, { getMode }) {
       timers.stopGame();
       renderBoard();
       setStatus(s, `Cracked it in ${row} guess${row === 1 ? '' : 'es'}!`, 'good');
-      celebrate({
+      if (onResult) onResult({ solved: true, moves: row, timeMs: timers.getGameElapsed(), score: 0 });
+      else celebrate({
         gameName: 'Mastermind',
         gameTimeMs: timers.getGameElapsed(),
         totalTimeMs: timers.getTotalElapsed(),
@@ -156,6 +160,7 @@ export function mastermind(shell, { getMode }) {
       renderBoard();
       revealCode();
       setStatus(s, `Out of guesses! The code is shown above.`, 'bad');
+      if (onResult) onResult({ solved: false, moves: row, timeMs: timers.getGameElapsed(), score: 0 });
       return;
     }
     renderBoard();

@@ -38,9 +38,22 @@ A single-page tab arcade of **23 classic puzzle, word & game-theory games**, des
 - **Tab-based SPA** with hash routing (deep-linkable per game)
 - **Quick** and **Advanced** difficulty modes — each game scales board size, rounds, or constraints
 - **Game timer** (per game) and **Session timer** (per visit)
+- **Head-to-head challenges**: challenge a friend at any of the puzzle games — they play the *exact same* seeded puzzle from a share link, and the better time/score wins **100 points**
+- **Accounts & points**: play as a local guest out of the box (points saved in the browser); enable real sign-in (Google, Apple, GitHub, Microsoft, Facebook, email, guest) + cross-device points by configuring Supabase (see below)
 - **Funny win celebration**: elephant 🐘, pig 🐷, and bear 🐻 cheer you on with rotating speech bubbles, confetti and a banner for ~11 seconds after every win
 - **Fully mobile-friendly**: responsive layouts, horizontally-scrolling tabs, 40px+ tap targets, prevent-zoom inputs
 - All games target ~5–15 minutes of play depending on mode
+
+## Accounts & head-to-head challenges
+
+Works with **zero setup** as a local guest: hit **⚔️ Challenge**, pick a game, play your round, and share the generated link. Whoever does better on the identical puzzle banks 100 points (stored per-browser for guests).
+
+To enable real accounts + cross-device points:
+1. Create a free [Supabase](https://supabase.com) project and run `supabase/schema.sql` in its SQL editor.
+2. Settings → API: copy the Project URL + anon (publishable) key into `js/config.js`.
+3. Auth → URL Configuration: add your site URL and `http://localhost:8000` as redirect URLs.
+
+The anon key is publishable and safe to commit; data is protected by Row-Level Security.
 
 ## Deploying to GitHub Pages
 

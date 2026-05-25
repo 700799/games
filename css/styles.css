@@ -619,6 +619,69 @@ canvas#tsp-canvas { display: block; width: 100%; background: #0f163a; border-rad
   transition: width .1s linear, background .3s;
 }
 
+/* ----------------- Account chip + menu + modals ----------------- */
+.user-area { display: flex; align-items: center; }
+.profile-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 999px; padding: 5px 12px 5px 6px; cursor: pointer;
+  color: var(--text); transition: background .15s;
+}
+.profile-chip:hover { background: var(--panel-2); }
+.profile-chip .avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent)); font-size: 16px;
+}
+.profile-chip .who { display: flex; flex-direction: column; line-height: 1.1; text-align: left; }
+.profile-chip .uname { font-weight: 600; font-size: 13px; }
+.profile-chip .upts { font-size: 11px; color: var(--accent-3); }
+
+.menu {
+  position: fixed; z-index: 200; min-width: 230px; max-width: 86vw;
+  background: var(--panel-2); border: 1px solid var(--border);
+  border-radius: 12px; box-shadow: var(--shadow); padding: 6px;
+}
+.menu-head { padding: 8px 10px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+.menu-head > div:first-child { font-weight: 700; }
+.menu-sub { font-size: 12px; color: var(--text-dim); }
+.menu-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); padding: 8px 10px 4px; }
+.menu-note { font-size: 12px; color: var(--text-dim); padding: 8px 10px; line-height: 1.4; }
+.menu-item {
+  display: block; width: 100%; text-align: left;
+  background: transparent; border: 0; color: var(--text);
+  padding: 9px 10px; border-radius: 8px; cursor: pointer; font-size: 13px;
+}
+.menu-item:hover { background: rgba(255,255,255,.06); }
+.menu-item.danger { color: var(--bad); }
+
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 150;
+  background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+.modal-card {
+  width: min(520px, 96vw); background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--border); border-radius: 16px; padding: 22px;
+  box-shadow: var(--shadow);
+}
+.modal-card h2 { margin: 0 0 8px; }
+.modal-card select {
+  background: var(--panel); color: var(--text); border: 1px solid var(--border);
+  border-radius: 8px; padding: 6px 10px; font-size: 14px;
+}
+.share-link {
+  width: 100%; margin-top: 10px; background: #0f1538; color: var(--accent-3);
+  border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 12px;
+  font-family: ui-monospace, Menlo, monospace;
+}
+.toast {
+  position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--border);
+  padding: 10px 16px; border-radius: 10px; box-shadow: var(--shadow);
+  z-index: 250; font-size: 13px; max-width: 90vw; text-align: center;
+}
+
 /* ============================================================
    Mobile responsiveness — keep games tappable on small screens.
    ============================================================ */
