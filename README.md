@@ -1,6 +1,6 @@
 # 🎮 Brain Arcade
 
-A single-page tab arcade of **23 classic puzzle, word & game-theory games**, designed for GitHub Pages. No build step — pure HTML/CSS/JS modules. Fully mobile-friendly with responsive layouts and touch-friendly targets.
+A single-page tab arcade of **25 classic puzzle, word, card & game-theory games**, designed for GitHub Pages. No build step — pure HTML/CSS/JS modules. Fully mobile-friendly with responsive layouts and touch-friendly targets.
 
 ## Games
 
@@ -32,6 +32,8 @@ A single-page tab arcade of **23 classic puzzle, word & game-theory games**, des
 21. 🀄 **Mahjong Solitaire** — Shanghai-style tile matching, full mahjong tile set
 22. 🍩 **Donut Hunt** — battleship-style hunt for the opponent's donuts
 23. 🎯 **Mastermind** — crack the hidden colour code from black/white peg feedback
+24. 🧠 **Memory Match** — heads-up pairs: vs the computer (Quick) or pass-and-play (Advanced)
+25. 🃏 **Heads-Up Poker** — no-limit Texas Hold'em against the computer; bust it to win
 
 ## Features
 
