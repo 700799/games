@@ -4,7 +4,7 @@ import { timers } from '../timer.js';
 
 // Click a peg with disks (source). Then click any other peg (destination).
 // Click the source peg again to cancel.
-export function hanoi(shell, { getMode }) {
+export function hanoi(shell, { getMode, onResult = null }) {
   const mode = getMode();
   const N = mode === 'advanced' ? 7 : 4;
   header(shell, {
@@ -96,7 +96,8 @@ export function hanoi(shell, { getMode }) {
         setStatus(s,
           `Solved in ${moves} moves (optimal: ${optimal})!`,
           moves === optimal ? 'good' : 'warn');
-        celebrate({
+        if (onResult) onResult({ solved: true, moves, timeMs: timers.getGameElapsed(), score: 0 });
+        else celebrate({
           gameName: 'Tower of Hanoi',
           gameTimeMs: timers.getGameElapsed(),
           totalTimeMs: timers.getTotalElapsed(),

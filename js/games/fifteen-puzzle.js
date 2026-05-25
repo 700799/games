@@ -1,8 +1,9 @@
 import { el, header, toolbar, status, setStatus } from '../helpers.js';
 import { celebrate } from '../celebration.js';
 import { timers } from '../timer.js';
+import { rngFor, seededShuffle } from '../rng.js';
 
-export function fifteen(shell, { getMode }) {
+export function fifteen(shell, { getMode, seed = null, onResult = null }) {
   const mode = getMode();
   const N = mode === 'advanced' ? 4 : 3; // 3x3 (8-puzzle) or 4x4 (15-puzzle)
   const goal = Array.from({ length: N * N }, (_, i) => (i + 1) % (N * N)); // last is 0 = empty
@@ -35,16 +36,17 @@ export function fifteen(shell, { getMode }) {
     return (inv + blankRowFromBottom) % 2 === 0;
   }
 
-  function scramble() {
+  function scramble(rng) {
     let arr;
     do {
-      arr = goal.slice().sort(() => Math.random() - 0.5);
+      arr = seededShuffle(goal, rng); // reuse rng across retries → deterministic for a seed
     } while (!isSolvable(arr) || arr.every((v, i) => v === goal[i]));
     return arr;
   }
 
   function reset() {
-    board = scramble();
+    // Seeded → identical scramble each reset (fair for challenges); else random.
+    board = scramble(rngFor(seed));
     moves = 0; won = false; lastWasHint = false;
     render();
     setStatus(s, 'Slide tiles to solve the puzzle.');
@@ -79,7 +81,8 @@ export function fifteen(shell, { getMode }) {
       won = true;
       timers.stopGame();
       setStatus(s, `Solved in ${moves} moves!`, 'good');
-      celebrate({
+      if (onResult) onResult({ solved: true, moves, timeMs: timers.getGameElapsed(), score: 0 });
+      else celebrate({
         gameName: `${N === 3 ? '8' : '15'}-Puzzle`,
         gameTimeMs: timers.getGameElapsed(),
         totalTimeMs: timers.getTotalElapsed(),

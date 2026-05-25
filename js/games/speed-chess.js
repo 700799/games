@@ -8,7 +8,7 @@ const GLYPH = {
   k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟',
 };
 
-export function speedChess(shell, { getMode }) {
+export function speedChess(shell, { getMode, onResult = null }) {
   const mode = getMode();
   const NUM = mode === 'advanced' ? SPEED_PUZZLES.length : 5;
   const timeScale = mode === 'advanced' ? 0.7 : 1; // tighter clock on advanced
@@ -222,6 +222,11 @@ export function speedChess(shell, { getMode }) {
     clearTicker();
     locked = true;
     timers.stopGame();
+    if (onResult) {
+      setStatus(s, `Round complete — solved ${solvedCount}/${NUM} for ${score} points!`, 'good');
+      onResult({ solved: solvedCount > 0, score, moves: solvedCount, timeMs: timers.getGameElapsed() });
+      return;
+    }
     const passed = solvedCount >= Math.ceil(NUM / 2);
     if (passed) {
       setStatus(s, `Round complete — solved ${solvedCount}/${NUM} for ${score} points!`, 'good');

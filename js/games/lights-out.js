@@ -1,8 +1,9 @@
 import { el, header, toolbar, status, setStatus } from '../helpers.js';
 import { celebrate } from '../celebration.js';
 import { timers } from '../timer.js';
+import { rngFor } from '../rng.js';
 
-export function lightsOut(shell, { getMode }) {
+export function lightsOut(shell, { getMode, seed = null, onResult = null }) {
   const mode = getMode();
   const N = mode === 'advanced' ? 5 : 3;
   header(shell, {
@@ -33,18 +34,19 @@ export function lightsOut(shell, { getMode }) {
     }
   }
 
-  function genSolvable(steps) {
+  function genSolvable(steps, rng) {
     const b = Array.from({ length: N }, () => Array(N).fill(false));
     for (let i = 0; i < steps; i++) {
-      const r = Math.floor(Math.random() * N), c = Math.floor(Math.random() * N);
+      const r = Math.floor(rng() * N), c = Math.floor(rng() * N);
       press(b, r, c);
     }
-    if (b.flat().every((v) => !v)) return genSolvable(steps);
+    if (b.flat().every((v) => !v)) return genSolvable(steps, rng); // reuse rng → still deterministic
     return b;
   }
 
   function reset() {
-    board = genSolvable(mode === 'advanced' ? 12 : 5);
+    // Seeded → identical starting board each reset (fair for challenges).
+    board = genSolvable(mode === 'advanced' ? 12 : 5, rngFor(seed));
     won = false; mvs = 0;
     render();
     setStatus(s, 'Turn off every light.');
@@ -74,7 +76,8 @@ export function lightsOut(shell, { getMode }) {
       won = true;
       timers.stopGame();
       setStatus(s, `Solved in ${mvs} moves!`, 'good');
-      celebrate({
+      if (onResult) onResult({ solved: true, moves: mvs, timeMs: timers.getGameElapsed(), score: 0 });
+      else celebrate({
         gameName: 'Lights Out',
         gameTimeMs: timers.getGameElapsed(),
         totalTimeMs: timers.getTotalElapsed(),
