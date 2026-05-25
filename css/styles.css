@@ -619,6 +619,60 @@ canvas#tsp-canvas { display: block; width: 100%; background: #0f163a; border-rad
   transition: width .1s linear, background .3s;
 }
 
+/* ----------------- Memory Match ----------------- */
+.match-score { display: flex; gap: 12px; justify-content: center; margin: 6px 0 12px; }
+.match-player {
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 12px; padding: 8px 18px; min-width: 110px;
+}
+.match-player.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(255,209,102,.3); }
+.mp-name { font-weight: 700; }
+.mp-score { font-size: 13px; color: var(--accent-3); }
+.match-grid { display: grid; gap: 8px; width: max-content; max-width: 100%; margin: 0 auto; }
+.match-card {
+  width: 72px; height: 72px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent-4), #0b6e8c);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 38px; cursor: pointer; user-select: none;
+  box-shadow: inset 0 -4px 0 rgba(0,0,0,.25); transition: transform .15s, background .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.match-card.up { background: var(--panel); cursor: default; }
+.match-card.matched { background: rgba(6,214,160,.18); box-shadow: none; }
+.match-card:not(.up):hover { transform: translateY(-2px); }
+
+/* ----------------- Heads-Up Poker ----------------- */
+.poker-table {
+  display: flex; flex-direction: column; gap: 12px; align-items: center;
+  background: radial-gradient(circle at 50% 40%, #16653f, #0c3322);
+  border: 3px solid #4a3322; border-radius: 18px; padding: 18px; margin: 8px 0;
+}
+.poker-seat {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 12px; min-width: 200px;
+  background: rgba(0,0,0,.18); border: 1px solid transparent;
+}
+.poker-seat.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(255,209,102,.3); }
+.seat-head { display: flex; gap: 14px; align-items: baseline; }
+.seat-name { font-weight: 700; }
+.seat-stack { color: var(--accent-3); font-size: 13px; }
+.poker-mid { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.pot { font-weight: 700; color: var(--accent); }
+.phase-tag { color: var(--text-dim); font-size: 13px; min-height: 18px; }
+.phand, .pboard { display: flex; gap: 6px; }
+.pcard {
+  width: 46px; height: 64px; border-radius: 7px; background: #fff; color: #111;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 17px; box-shadow: 0 2px 5px rgba(0,0,0,.35);
+}
+.pcard.red { color: #c0392b; }
+.pcard.back {
+  background: repeating-linear-gradient(45deg, #2a3473, #2a3473 6px, #3a4795 6px, #3a4795 12px);
+  color: rgba(255,255,255,.35);
+}
+.poker-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 6px; min-height: 42px; }
+
 /* ----------------- Account chip + menu + modals ----------------- */
 .user-area { display: flex; align-items: center; }
 .profile-chip {
@@ -770,6 +824,15 @@ canvas#tsp-canvas { display: block; width: 100%; background: #0f163a; border-rad
   /* Speed Mates */
   .speed-clock-text { font-size: 16px; min-width: 48px; }
 
+  /* Memory Match */
+  .match-card { width: 56px; height: 56px; font-size: 28px; }
+  .match-grid { gap: 5px; }
+
+  /* Heads-Up Poker */
+  .poker-table { padding: 12px; }
+  .poker-seat { min-width: 0; width: 100%; }
+  .pcard { width: 38px; height: 54px; font-size: 14px; }
+
   /* TSP canvas already responsive via width:100% */
 }
 
@@ -783,6 +846,8 @@ canvas#tsp-canvas { display: block; width: 100%; background: #0f163a; border-rad
   .wordle-key.wide { min-width: 38px; }
   .mm-peg { width: 24px; height: 24px; }
   .mm-swatch { width: 34px; height: 34px; }
+  .match-card { width: 48px; height: 48px; font-size: 24px; }
+  .pcard { width: 32px; height: 46px; font-size: 12px; }
 }
 
 /* Celebration overlay tweaks on small screens */

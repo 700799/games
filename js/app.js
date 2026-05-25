@@ -32,6 +32,8 @@ import { chineseCheckers } from './games/chinese-checkers.js';
 import { mahjong } from './games/mahjong.js';
 import { donutHunt } from './games/donut-hunt.js';
 import { mastermind } from './games/mastermind.js';
+import { match } from './games/match.js';
+import { poker } from './games/poker.js';
 
 export const GAMES = [
   { id: 'hanoi',           icon: '🗼', name: 'Tower of Hanoi',       mount: hanoi },
@@ -57,6 +59,8 @@ export const GAMES = [
   { id: 'mahjong',         icon: '🀄', name: 'Mahjong',              mount: mahjong },
   { id: 'donut-hunt',      icon: '🍩', name: 'Donut Hunt',           mount: donutHunt },
   { id: 'mastermind',      icon: '🎯', name: 'Mastermind',           mount: mastermind },
+  { id: 'match',           icon: '🧠', name: 'Memory Match',          mount: match },
+  { id: 'poker',           icon: '🃏', name: 'Heads-Up Poker',        mount: poker },
 ];
 
 const state = {
