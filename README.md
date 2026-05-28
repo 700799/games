@@ -41,6 +41,7 @@ A single-page tab arcade of **26 classic puzzle, word, card & game-theory games*
 - **Tab-based SPA** with hash routing (deep-linkable per game)
 - **Quick** and **Advanced** difficulty modes — each game scales board size, rounds, or constraints
 - **Game timer** (per game) and **Session timer** (per visit)
+- **Strategy advisor for every game**: a 🧠 Advisor button opens a "how to win" guide for the current game — goal, ranked winning strategies, and common mistakes, including the *provably optimal* method where one exists (Nim XOR, Tower of Hanoi cycle, Lights Out chasing, Mastermind minimax, …). Heads-Up Poker additionally has a **live** advisor (equity, pot odds, recommended action)
 - **Head-to-head challenges**: challenge a friend at any of the puzzle games — they play the *exact same* seeded puzzle from a share link, and the better time/score wins **100 points**
 - **Accounts & points**: play as a local guest out of the box (points saved in the browser); enable real sign-in (Google, Apple, GitHub, Microsoft, Facebook, email, guest) + cross-device points by configuring Supabase (see below)
 - **Funny win celebration**: elephant 🐘, pig 🐷, and bear 🐻 cheer you on with rotating speech bubbles, confetti and a banner for ~11 seconds after every win
