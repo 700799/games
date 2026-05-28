@@ -34,6 +34,7 @@ import { donutHunt } from './games/donut-hunt.js';
 import { mastermind } from './games/mastermind.js';
 import { match } from './games/match.js';
 import { poker } from './games/poker.js';
+import { pokerScenarios } from './games/poker-scenarios.js';
 
 export const GAMES = [
   { id: 'hanoi',           icon: '🗼', name: 'Tower of Hanoi',       mount: hanoi },
@@ -61,6 +62,7 @@ export const GAMES = [
   { id: 'mastermind',      icon: '🎯', name: 'Mastermind',           mount: mastermind },
   { id: 'match',           icon: '🧠', name: 'Memory Match',          mount: match },
   { id: 'poker',           icon: '🃏', name: 'Heads-Up Poker',        mount: poker },
+  { id: 'poker-scenarios', icon: '🎓', name: 'Poker Scenarios',       mount: pokerScenarios },
 ];
 
 const state = {

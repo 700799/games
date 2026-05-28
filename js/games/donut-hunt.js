@@ -267,7 +267,30 @@ export function donutHunt(shell, { getMode }) {
   }
 
   function pickAiTarget() {
-    // If active hit chain, try adjacent cells
+    // Hunt mode: if we have 2+ hits in a row, lock onto the line and extend
+    // along it; otherwise probe the neighbours of any unsunk hit.
+    if (aiState.lastHits.length >= 2) {
+      const a = aiState.lastHits[0], b = aiState.lastHits[aiState.lastHits.length - 1];
+      const dr = Math.sign(b[0] - a[0]), dc = Math.sign(b[1] - a[1]);
+      // Extend forward then backward along the locked axis.
+      const tryExtend = (origin, sign) => {
+        let [r, c] = origin;
+        for (let step = 0; step < N; step++) {
+          r += dr * sign; c += dc * sign;
+          if (r < 0 || r >= N || c < 0 || c >= N) return null;
+          const k = key(r, c);
+          if (myBoard.misses.has(k)) return null;
+          if (myBoard.hits.has(k) || aiState.tried.has(k)) continue;
+          return [r, c];
+        }
+        return null;
+      };
+      const fwd = tryExtend(b, 1);
+      if (fwd) return fwd;
+      const back = tryExtend(a, -1);
+      if (back) return back;
+      // Line exhausted but ship not sunk — fall through to neighbour probe.
+    }
     if (aiState.lastHits.length > 0) {
       const candidates = [];
       for (const [r, c] of aiState.lastHits) {

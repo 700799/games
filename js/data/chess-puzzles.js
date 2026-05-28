@@ -4,15 +4,12 @@
 
 const row = (s) => s.split('').map((c) => c === ' ' ? '.' : c);
 
-// Each puzzle:
-//   board: 8 rows top→bottom (row 0 = rank 8)
-//   side: 'w' or 'b'
-//   moves: array of [from, to] pairs alternating player/opponent
-//     ('e2' style notation, file a-h + rank 1-8)
-//   title, hint
+// Each puzzle: { title, theme, hint, side ('w'|'b'), board (8 rows top→bottom),
+//   moves [[from,to], ...] alternating player/opponent }
 export const PUZZLES = [
   {
     title: 'Back-rank mate (Mate in 1)',
+    theme: 'Back rank',
     hint: 'White rook to the back rank — black king has nowhere to hide.',
     side: 'w',
     board: [
@@ -29,6 +26,7 @@ export const PUZZLES = [
   },
   {
     title: 'Knight mate (Mate in 1)',
+    theme: 'Mating net',
     hint: 'Find the killer knight square.',
     side: 'w',
     board: [
@@ -45,6 +43,7 @@ export const PUZZLES = [
   },
   {
     title: 'Queen mate (Mate in 1)',
+    theme: 'Long-range attack',
     hint: 'Deliver mate with the queen; nothing can block.',
     side: 'w',
     board: [
@@ -61,6 +60,7 @@ export const PUZZLES = [
   },
   {
     title: 'Win the queen (Tactic)',
+    theme: 'Pin',
     hint: 'A pin wins material.',
     side: 'w',
     board: [
@@ -74,10 +74,10 @@ export const PUZZLES = [
       row('R..Q.RK.'),
     ],
     moves: [['d2','g5'], ['e7','g5'], ['d1','d8']],
-    // Note: simplified — accept the bishop pin sequence.
   },
   {
     title: 'Smothered mate (Mate in 2)',
+    theme: 'Smothered mate',
     hint: 'Sacrifice the queen — let the knight finish.',
     side: 'w',
     board: [
@@ -91,10 +91,10 @@ export const PUZZLES = [
       row('......K.'),
     ],
     moves: [['h5','g6'], ['h7','g6'], ['f7','h6']],
-    // Qg6 hxg6 Nh6# (illustrative; sequence is fixed for the puzzle).
   },
   {
     title: 'Discovered check + win',
+    theme: 'Discovered attack',
     hint: 'Move the bishop, unleash the rook.',
     side: 'w',
     board: [
@@ -111,6 +111,7 @@ export const PUZZLES = [
   },
   {
     title: 'Promotion to win (Endgame)',
+    theme: 'Endgame promotion',
     hint: 'Push the pawn — the king is too far.',
     side: 'w',
     board: [
@@ -127,6 +128,7 @@ export const PUZZLES = [
   },
   {
     title: 'Fork the king and rook',
+    theme: 'Knight fork',
     hint: 'A knight fork wins material.',
     side: 'w',
     board: [
@@ -143,6 +145,7 @@ export const PUZZLES = [
   },
   {
     title: 'Greek gift (Mate in 2)',
+    theme: 'Greek-gift sacrifice',
     hint: 'Sacrifice the bishop to draw the king out.',
     side: 'w',
     board: [
@@ -159,6 +162,7 @@ export const PUZZLES = [
   },
   {
     title: 'Two-rook ladder (Mate in 2)',
+    theme: 'Two-rook ladder',
     hint: 'Rooks on the 7th and 8th rank.',
     side: 'w',
     board: [
@@ -172,5 +176,39 @@ export const PUZZLES = [
       row('......K.'),
     ],
     moves: [['b6','b8'], ['e8','f8'], ['a7','a8']],
+  },
+  {
+    title: 'Skewer the queen (Tactic)',
+    theme: 'Skewer',
+    hint: 'Check the king on the back rank — the queen falls behind.',
+    side: 'w',
+    board: [
+      row('....k..q'),
+      row('.....ppp'),
+      row('..P.....'),
+      row('........'),
+      row('........'),
+      row('........'),
+      row('.....PPP'),
+      row('R.....K.'),
+    ],
+    moves: [['a1','a8'], ['e8','e7'], ['a8','h8']],
+  },
+  {
+    title: 'Pawn fork (Tactic)',
+    theme: 'Pawn fork',
+    hint: 'Advance the pawn — two pieces, only one can survive.',
+    side: 'w',
+    board: [
+      row('.......k'),
+      row('.....ppp'),
+      row('..n.b...'),
+      row('........'),
+      row('..PP....'),
+      row('........'),
+      row('.....PPP'),
+      row('......K.'),
+    ],
+    moves: [['d4','d5'], ['c6','a5'], ['d5','e6']],
   },
 ];
