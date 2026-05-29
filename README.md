@@ -1,6 +1,30 @@
 # 🎮 Brain Arcade
 
-A single-page tab arcade of **23 classic puzzle, word & game-theory games**, designed for GitHub Pages. No build step — pure HTML/CSS/JS modules. Fully mobile-friendly with responsive layouts and touch-friendly targets.
+A single-page tab arcade of **23 classic puzzle, word & game-theory games** plus a
+**🎉 Party Mode of 10 Mario-Party-style minigames**, designed for GitHub Pages. No
+build step — pure HTML/CSS/JS modules. Fully mobile-friendly with responsive
+layouts and touch-friendly targets.
+
+## 🎉 Party Mode
+
+A colourful party hub of **10 fast, fun minigames** — pick one from the board,
+take a **free Practice round** (it never counts), then hit **🏁 Start Challenge**
+for a scored run with a 3·2·1·GO! countdown, ⭐ star ratings, confetti, and a saved
+best score. Switch the top toggle to **Advanced** for tougher, longer rounds.
+
+1. 🥏 **Bumper Balls** — shove the CPU rivals off the shrinking icy platform (drag / arrow keys)
+2. 🔥 **Hot Rope Jump** — time your hops over the swinging flame as it speeds up (Space / tap)
+3. 🚲 **Pedal Power** — a button-masher race to out-pedal three rivals
+4. 🃏 **Memory Match** — flip cards to find every pair; faster + fewer flips = more ⭐
+5. 🐚 **Shell Shuffle** — keep your eye on the cup hiding the star as they shuffle
+6. 🌱 **Whack-a-Plant** — bop sprouts for points, dodge the Bob-ombs, beat the clock
+7. 🪙 **Coin Cascade** — slide your basket to catch raining coins & gems, dodge bombs
+8. 🟦 **Hexagon Heat** — hop onto the called colour before the floor drops away
+9. 💣 **Big Bob-omb Blast** — push-your-luck plungers; bank your coins before the blast
+10. ✏️ **Trace Race** — trace the shape's outline fast and accurately
+
+Every minigame works with mouse **and** touch, and awards party points toward your
+profile when you set a new personal best.
 
 ## Games
 
@@ -35,6 +59,7 @@ A single-page tab arcade of **23 classic puzzle, word & game-theory games**, des
 
 ## Features
 
+- **🎉 Party Mode** — 10 Mario-Party-style minigames with free practice rounds, a 3·2·1·GO! countdown, ⭐ star ratings, confetti and per-game best scores
 - **Tab-based SPA** with hash routing (deep-linkable per game)
 - **Quick** and **Advanced** difficulty modes — each game scales board size, rounds, or constraints
 - **Game timer** (per game) and **Session timer** (per visit)
@@ -75,12 +100,15 @@ python3 -m http.server 8000
 ```
 .
 ├── index.html
-├── css/styles.css
+├── css/
+│   ├── styles.css       # core arcade theme
+│   └── party.css        # 🎉 Party Mode styling
 ├── js/
 │   ├── app.js           # tab router, mode toggle, lifecycle
 │   ├── timer.js         # per-game + session stopwatches
 │   ├── celebration.js   # elephant/pig/bear win animation
 │   ├── helpers.js       # tiny DOM helpers
 │   └── games/           # one file per game
+│       └── party/       # 🎉 Party Mode: framework + 10 minigames
 └── .nojekyll
 ```
