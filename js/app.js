@@ -32,8 +32,10 @@ import { chineseCheckers } from './games/chinese-checkers.js';
 import { mahjong } from './games/mahjong.js';
 import { donutHunt } from './games/donut-hunt.js';
 import { mastermind } from './games/mastermind.js';
+import { partyMode } from './games/party/index.js';
 
 export const GAMES = [
+  { id: 'party',           icon: '🎉', name: 'Party Mode',           mount: partyMode },
   { id: 'hanoi',           icon: '🗼', name: 'Tower of Hanoi',       mount: hanoi },
   { id: 'fifteen',         icon: '🧩', name: '15-Puzzle',            mount: fifteen },
   { id: 'water-jug',       icon: '🪣', name: 'Water Jug',            mount: waterJug },
