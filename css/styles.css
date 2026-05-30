@@ -776,6 +776,25 @@ canvas#tsp-canvas { display: block; width: 100%; background: #0f163a; border-rad
 .sc-explain .btn { margin-top: 8px; }
 .sc-final { background: var(--panel-2); padding: 16px; border-radius: 12px; text-align: center; }
 
+/* ----------------- Strategy advisor modal ----------------- */
+.adv-goal {
+  background: rgba(0,0,0,.18); border-radius: 10px; padding: 10px 12px;
+  font-size: 14px; line-height: 1.45; margin-bottom: 8px;
+}
+.adv-optimal {
+  background: rgba(6,214,160,.12); border: 1px solid rgba(6,214,160,.45);
+  border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.45;
+  margin-bottom: 8px;
+}
+.adv-section { margin-top: 6px; }
+.adv-section h4 {
+  margin: 8px 0 4px; font-size: 13px; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--text-dim);
+}
+.adv-section ol, .adv-section ul { margin: 4px 0; padding-left: 22px; }
+.adv-section li { margin: 5px 0; font-size: 13.5px; line-height: 1.5; }
+.adv-mistakes li { color: #ffb4c2; }
+
 /* ----------------- Account chip + menu + modals ----------------- */
 .user-area { display: flex; align-items: center; }
 .profile-chip {
