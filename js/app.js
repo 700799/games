@@ -8,6 +8,7 @@ import {
   encodeChallenge, decodeChallenge,
 } from './challenges.js';
 import { makeSeed } from './rng.js';
+import { strategyFor } from './data/strategies.js';
 
 import { hanoi } from './games/tower-of-hanoi.js';
 import { fifteen } from './games/fifteen-puzzle.js';
@@ -34,6 +35,7 @@ import { donutHunt } from './games/donut-hunt.js';
 import { mastermind } from './games/mastermind.js';
 import { match } from './games/match.js';
 import { poker } from './games/poker.js';
+import { pokerScenarios } from './games/poker-scenarios.js';
 
 export const GAMES = [
   { id: 'hanoi',           icon: '🗼', name: 'Tower of Hanoi',       mount: hanoi },
@@ -61,6 +63,7 @@ export const GAMES = [
   { id: 'mastermind',      icon: '🎯', name: 'Mastermind',           mount: mastermind },
   { id: 'match',           icon: '🧠', name: 'Memory Match',          mount: match },
   { id: 'poker',           icon: '🃏', name: 'Heads-Up Poker',        mount: poker },
+  { id: 'poker-scenarios', icon: '🎓', name: 'Poker Scenarios',       mount: pokerScenarios },
 ];
 
 const state = {
@@ -232,6 +235,39 @@ function toast(msg) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Strategy advisor — "how to win" for the current game                 */
+/* ------------------------------------------------------------------ */
+function openAdvisor() {
+  const game = GAMES.find((g) => g.id === state.currentId) || GAMES[0];
+  const strat = strategyFor(game.id);
+  if (!strat) { toast('No advisor available for this game yet.'); return; }
+
+  const sections = [
+    el('h2', {}, `${game.icon} ${game.name} — Advisor`),
+    el('div', { class: 'adv-goal' }, [el('b', {}, 'Goal: '), strat.goal]),
+  ];
+  if (strat.optimal) {
+    sections.push(el('div', { class: 'adv-optimal' }, [el('b', {}, '★ Optimal play: '), strat.optimal]));
+  }
+  sections.push(el('div', { class: 'adv-section' }, [
+    el('h4', {}, 'How to win'),
+    el('ol', {}, strat.strategies.map((t) => el('li', {}, t))),
+  ]));
+  if (strat.mistakes && strat.mistakes.length) {
+    sections.push(el('div', { class: 'adv-section' }, [
+      el('h4', {}, 'Avoid'),
+      el('ul', { class: 'adv-mistakes' }, strat.mistakes.map((t) => el('li', {}, t))),
+    ]));
+  }
+  const closeBtn = el('button', { class: 'btn primary' }, 'Got it');
+  const row = el('div', { class: 'gt-row', style: { marginTop: '14px', justifyContent: 'flex-end' } }, [closeBtn]);
+  sections.push(row);
+
+  const m = modal(sections);
+  closeBtn.onclick = () => m.close();
+}
+
+/* ------------------------------------------------------------------ */
 /* Head-to-head challenges (async same-seed race)                      */
 /* ------------------------------------------------------------------ */
 function openChallengePanel() {
@@ -379,6 +415,8 @@ async function init() {
   });
   const challengeBtn = document.getElementById('challenge-btn');
   if (challengeBtn) challengeBtn.onclick = openChallengePanel;
+  const advisorBtn = document.getElementById('advisor-btn');
+  if (advisorBtn) advisorBtn.onclick = openAdvisor;
 
   // Bring up Supabase if configured, then consume any OAuth ?code= callback.
   await auth.initAuth();

@@ -284,21 +284,64 @@ export function chineseCheckers(shell, { getMode }) {
 
   function aiMove() {
     if (won) return;
-    // Simple heuristic: prefer moves that advance pieces toward their goal row.
-    // For player 2, goal is row 0 (top), so smaller r is better.
-    const myPieces = Object.entries(board)
-      .filter(([, v]) => v === 2)
-      .map(([k]) => k.split(',').map(Number));
-    let best = null;
-    let bestScore = -Infinity;
-    for (const [r, c] of myPieces) {
-      const moves = legalMoves(r, c);
-      for (const [tr, tc, kind] of moves) {
-        const gain = (r - tr) + (kind === 'jump' ? 1 : 0);
-        if (gain > bestScore) {
-          bestScore = gain; best = { from: [r, c], to: [tr, tc] };
+    // 2-ply lookahead: pick the AI move whose resulting position maximises
+    // (AI progress toward row 0) minus (the opponent's best progress reply).
+    const allCandidates = [];
+    for (const [k, owner] of Object.entries(board)) {
+      if (owner !== 2) continue;
+      const [r, c] = k.split(',').map(Number);
+      for (const [tr, tc, kind] of legalMoves(r, c)) {
+        allCandidates.push({ from: [r, c], to: [tr, tc], kind });
+      }
+    }
+    if (!allCandidates.length) { afterMove(); return; }
+
+    // Score one resulting position from AI's POV: lower row = better for AI.
+    function evalPosition() {
+      let aiSum = 0, aiCount = 0, p1Sum = 0, p1Count = 0;
+      for (const [k, v] of Object.entries(board)) {
+        const [r] = k.split(',').map(Number);
+        if (v === 2) { aiSum += r; aiCount++; }
+        else if (v === 1) { p1Sum += r; p1Count++; }
+      }
+      const aiDist = aiSum / Math.max(1, aiCount);     // AI wants low row → low aiDist
+      const p1Dist = (ROWS - 1) - p1Sum / Math.max(1, p1Count); // P1 wants high row → high p1Sum → low p1Dist (we negate to keep "lower is better")
+      return -aiDist - p1Dist; // higher = better for AI
+    }
+
+    function bestReplyScore() {
+      let bestR = -Infinity;
+      for (const [k, owner] of Object.entries(board)) {
+        if (owner !== 1) continue;
+        const [r, c] = k.split(',').map(Number);
+        for (const [tr, tc] of legalMoves(r, c)) {
+          // simulate P1 move
+          board[key(tr, tc)] = 1; delete board[key(r, c)];
+          // score from P1's POV — they want high row, so we score -row for them
+          let p1Sum = 0, p1Count = 0;
+          for (const [k2, v] of Object.entries(board)) {
+            if (v !== 1) continue;
+            const [pr] = k2.split(',').map(Number);
+            p1Sum += pr; p1Count++;
+          }
+          const s = p1Sum / Math.max(1, p1Count); // higher is better for P1
+          if (s > bestR) bestR = s;
+          // undo
+          board[key(r, c)] = 1; delete board[key(tr, tc)];
         }
       }
+      return bestR === -Infinity ? 0 : bestR;
+    }
+
+    let best = null, bestScore = -Infinity;
+    for (const m of allCandidates) {
+      const [fr, fc] = m.from, [tr, tc] = m.to;
+      board[key(tr, tc)] = 2; delete board[key(fr, fc)];
+      const myScore = evalPosition();
+      const oppReply = bestReplyScore(); // higher = better for P1 = worse for AI
+      const score = myScore - 0.6 * oppReply + (m.kind === 'jump' ? 0.4 : 0);
+      board[key(fr, fc)] = 2; delete board[key(tr, tc)];
+      if (score > bestScore) { bestScore = score; best = m; }
     }
     if (!best) { afterMove(); return; }
     const [fr, fc] = best.from, [tr, tc] = best.to;

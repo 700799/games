@@ -22,14 +22,17 @@ export function chessPuzzle(shell, { getMode }) {
   const tb = toolbar(shell);
   const progSpan = el('div', { class: 'puzzle-prog' });
   const hintBtn = el('button', { class: 'btn ghost' }, '💡 Hint');
+  const showBtn = el('button', { class: 'btn ghost' }, '👁 Show solution');
   const restartBtn = el('button', { class: 'btn ghost' }, '↺ This puzzle');
-  tb.append(hintBtn, restartBtn, progSpan);
+  tb.append(hintBtn, showBtn, restartBtn, progSpan);
 
   const s = status(shell);
+  const puzzleHead = el('div', { class: 'chess-puzzle-head' });
+  shell.appendChild(puzzleHead);
   const boardEl = el('div', { class: 'chess-board' });
   shell.appendChild(boardEl);
 
-  let pIndex, board, side, expectedIdx, from, won;
+  let pIndex, board, side, expectedIdx, from, won, wrongAttempts;
 
   function loadPuzzle(i) {
     const p = puzzles[i];
@@ -37,8 +40,16 @@ export function chessPuzzle(shell, { getMode }) {
     side = p.side;
     expectedIdx = 0;
     from = null;
+    wrongAttempts = 0;
     render();
-    setStatus(s, `Puzzle ${i + 1}/${NUM} — ${p.title}. ${side === 'w' ? 'White' : 'Black'} to move.`);
+    renderHead(p);
+    setStatus(s, `Puzzle ${i + 1}/${NUM} · ${side === 'w' ? 'White' : 'Black'} to move.`);
+  }
+
+  function renderHead(p) {
+    puzzleHead.innerHTML = '';
+    puzzleHead.appendChild(el('div', { class: 'cph-title' }, p.title));
+    if (p.theme) puzzleHead.appendChild(el('span', { class: 'cph-theme' }, p.theme));
   }
 
   function reset() {
@@ -135,9 +146,29 @@ export function chessPuzzle(shell, { getMode }) {
     } else {
       // Wrong move
       from = null;
+      wrongAttempts++;
       render();
-      setStatus(s, `That's not the puzzle's move. Try again.`, 'bad');
+      const tail = wrongAttempts >= 2 ? ' Try the 💡 Hint button.' : '';
+      setStatus(s, `That's not the puzzle's move. Try again.${tail}`, 'bad');
     }
+  }
+
+  // Flash two squares (from + to) for a couple of seconds as a visual hint.
+  function flashSquares(fromSq, toSq, ms = 1800) {
+    const squareCells = Array.from(boardEl.children);
+    const idx = (sq) => {
+      const c = sq.charCodeAt(0) - 97;
+      const r = 8 - parseInt(sq[1], 10);
+      return r * 8 + c;
+    };
+    const fEl = squareCells[idx(fromSq)];
+    const tEl = squareCells[idx(toSq)];
+    if (fEl) fEl.classList.add('hint-from');
+    if (tEl) tEl.classList.add('hint-to');
+    setTimeout(() => {
+      fEl && fEl.classList.remove('hint-from');
+      tEl && tEl.classList.remove('hint-to');
+    }, ms);
   }
 
   function applyMove(r1, c1, r2, c2) {
@@ -170,7 +201,14 @@ export function chessPuzzle(shell, { getMode }) {
   hintBtn.onclick = () => {
     const expected = puzzles[pIndex].moves[expectedIdx];
     if (!expected) return;
-    setStatus(s, `Hint: ${puzzles[pIndex].hint} (move from ${expected[0]})`, 'warn');
+    flashSquares(expected[0], expected[1]);
+    setStatus(s, `Hint: ${puzzles[pIndex].hint} (${expected[0]} → ${expected[1]})`, 'warn');
+  };
+  showBtn.onclick = () => {
+    const expected = puzzles[pIndex].moves[expectedIdx];
+    if (!expected) return;
+    flashSquares(expected[0], expected[1], 2400);
+    setStatus(s, `Solution begins: ${expected[0]} → ${expected[1]}. Play it.`, 'warn');
   };
   restartBtn.onclick = () => loadPuzzle(pIndex);
 
