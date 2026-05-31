@@ -1,9 +1,29 @@
 # 🎮 Brain Arcade
 
-A single-page tab arcade of **23 classic puzzle, word & game-theory games** plus a
-**🎉 Party Mode of 10 Mario-Party-style minigames**, designed for GitHub Pages. No
-build step — pure HTML/CSS/JS modules. Fully mobile-friendly with responsive
-layouts and touch-friendly targets.
+A single-page tab arcade of **23 classic puzzle, word & game-theory games**, a
+**🎉 Party Mode of 10 Mario-Party-style minigames**, and a new **3D Action
+Arena** powered by Babylon.js — all in one zero-build SPA designed for GitHub
+Pages. Fully mobile-friendly with responsive layouts and touch-friendly targets.
+
+## 🎯 3D Action Arena (Babylon.js)
+
+A four-game arcade of fast 3D action, lazy-loaded on first use (Babylon.js is
+fetched from a CDN only when you open one of these — the puzzle games don't pay
+that cost):
+
+- **🚀 Missile Defense** — click anywhere in the sky to fire an interceptor;
+  the blast wipes out incoming ICBMs. Survive 4–6 escalating waves.
+- **🛩 Sky Race** — third-person jet through a synth-wave corridor. WASD,
+  arrows, or drag to steer; fly through cyan rings, dodge magenta pillars.
+- **🛡 Tank Duel** — top-down tank vs. computer in a walled arena. WASD to
+  move, mouse/touch to aim, click/tap to fire. Walls block shells; the AI
+  patrols, takes line-of-sight shots, and tries to flank.
+- **📷 Photo Safari** — drag-to-look first-person camera in a savanna full of
+  wandering zebras, giraffes, elephants, lions, and gazelles. Tap to snap;
+  bigger, more-centred shots score more. Beat the target before time runs out.
+
+Each game has its own win/lose conditions, mobile controls, and a heads-up
+display of score, health, time, etc.
 
 ## 🎉 Party Mode
 

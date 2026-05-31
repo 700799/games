@@ -34,7 +34,18 @@ import { donutHunt } from './games/donut-hunt.js';
 import { mastermind } from './games/mastermind.js';
 import { partyMode } from './games/party/index.js';
 
+// 3D action games (Babylon.js, lazy-loaded on demand)
+import { missileDefense } from './games/action/missile-defense.js';
+import { skyRace } from './games/action/sky-race.js';
+import { tankDuel } from './games/action/tank-duel.js';
+import { photoSafari } from './games/action/photo-safari.js';
+
 export const GAMES = [
+  // 3D Action Arena (Babylon.js)
+  { id: 'missile-defense', icon: '🚀', name: 'Missile Defense',      mount: missileDefense },
+  { id: 'sky-race',        icon: '🛩', name: 'Sky Race',              mount: skyRace },
+  { id: 'tank-duel',       icon: '🛡', name: 'Tank Duel',             mount: tankDuel },
+  { id: 'photo-safari',    icon: '📷', name: 'Photo Safari',          mount: photoSafari },
   { id: 'party',           icon: '🎉', name: 'Party Mode',           mount: partyMode },
   { id: 'hanoi',           icon: '🗼', name: 'Tower of Hanoi',       mount: hanoi },
   { id: 'fifteen',         icon: '🧩', name: '15-Puzzle',            mount: fifteen },
