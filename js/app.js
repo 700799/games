@@ -72,24 +72,111 @@ export const GAMES = [
   { id: 'mastermind',      icon: '🎯', name: 'Mastermind',           mount: mastermind },
 ];
 
+// Drawer navigation: games grouped into ordered categories (covers every GAMES id).
+export const CATEGORIES = [
+  { title: 'Party',           icon: '🎉', ids: ['party'] },
+  { title: '3D Action Arena', icon: '🎯', ids: ['missile-defense', 'sky-race', 'tank-duel', 'photo-safari'] },
+  { title: 'Logic puzzles',   icon: '🧩', ids: ['hanoi', 'fifteen', 'water-jug', 'peg-solitaire', 'lights-out', 'nim', 'tsp'] },
+  { title: 'Game theory',     icon: '🧠', ids: ['misere-nim', 'prisoner', 'stag-hunt', 'hawk-dove', 'ultimatum', 'centipede', 'public-goods', 'battle-sexes'] },
+  { title: 'Word / Board / Strategy', icon: '🔤', ids: ['wordle', 'anagrams', 'chess', 'speed-chess', 'chinese-checkers', 'mahjong', 'donut-hunt', 'mastermind'] },
+];
+
 const state = {
   mode: 'quick',
   currentId: null,
   currentTeardown: null,
   activeChallenge: null, // suppresses normal hashchange re-mount during a challenge
+  navOpen: false,        // games drawer open?
+  navLastFocus: null,    // element focus returns to when the drawer closes
 };
 
-function buildTabs() {
-  const nav = document.getElementById('tabs');
-  nav.innerHTML = '';
-  GAMES.forEach((g, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'tab';
-    btn.dataset.id = g.id;
-    btn.innerHTML = `<span>${g.icon}</span><span class="tab-num">${idx + 1}.</span><span>${g.name}</span>`;
-    btn.onclick = () => { state.activeChallenge = null; navigate(g.id); };
-    nav.appendChild(btn);
+function buildDrawer() {
+  const list = document.getElementById('nav-list');
+  list.innerHTML = '';
+  const byId = new Map(GAMES.map((g) => [g.id, g]));
+  CATEGORIES.forEach((cat) => {
+    list.appendChild(el('div', { class: 'nav-cat' }, [
+      el('span', { class: 'nav-cat-icon' }, cat.icon),
+      el('span', {}, cat.title),
+    ]));
+    cat.ids.forEach((id) => {
+      const g = byId.get(id);
+      if (!g) return; // tolerate unknown / future-removed ids
+      const item = el('button', {
+        class: 'nav-item', 'data-id': g.id, type: 'button', role: 'menuitem',
+        onclick: () => { state.activeChallenge = null; navigate(g.id); closeDrawer(); },
+      }, [
+        el('span', { class: 'nav-item-icon' }, g.icon),
+        el('span', { class: 'nav-item-name' }, g.name),
+      ]);
+      list.appendChild(item);
+    });
   });
+}
+
+function updateCurrentGameLabel(id) {
+  const g = GAMES.find((x) => x.id === id) || GAMES[0];
+  const host = document.getElementById('current-game');
+  if (!host) return;
+  host.querySelector('.cg-icon').textContent = g.icon;
+  host.querySelector('.cg-name').textContent = g.name;
+}
+
+/* ------------------------------------------------------------------ */
+/* Games navigation drawer (left slide-in, overlay + scrim)            */
+/* ------------------------------------------------------------------ */
+function openDrawer() {
+  if (state.navOpen) return;
+  state.navOpen = true;
+  const drawer = document.getElementById('nav-drawer');
+  const scrim = document.getElementById('nav-scrim');
+  const toggle = document.getElementById('nav-toggle');
+  state.navLastFocus = toggle;
+  scrim.hidden = false;
+  // next frame so the translateX/opacity transition runs from the closed state
+  requestAnimationFrame(() => { drawer.classList.add('open'); scrim.classList.add('open'); });
+  drawer.setAttribute('aria-hidden', 'false');
+  toggle.setAttribute('aria-expanded', 'true');
+  document.body.classList.add('nav-lock');
+  document.addEventListener('keydown', onDrawerKeydown);
+  const active = drawer.querySelector('.nav-item.active') || drawer.querySelector('.nav-item');
+  if (active) active.focus();
+}
+
+function closeDrawer() {
+  if (!state.navOpen) return;
+  state.navOpen = false;
+  const drawer = document.getElementById('nav-drawer');
+  const scrim = document.getElementById('nav-scrim');
+  const toggle = document.getElementById('nav-toggle');
+  drawer.classList.remove('open');
+  scrim.classList.remove('open');
+  drawer.setAttribute('aria-hidden', 'true');
+  toggle.setAttribute('aria-expanded', 'false');
+  document.body.classList.remove('nav-lock');
+  document.removeEventListener('keydown', onDrawerKeydown);
+  const hideScrim = () => { if (!state.navOpen) scrim.hidden = true; };
+  scrim.addEventListener('transitionend', hideScrim, { once: true });
+  setTimeout(hideScrim, 250); // fallback when transitions are disabled (reduced motion)
+  const ret = state.navLastFocus;
+  state.navLastFocus = null;
+  if (ret && typeof ret.focus === 'function') ret.focus();
+}
+
+function toggleDrawer() { state.navOpen ? closeDrawer() : openDrawer(); }
+
+function onDrawerKeydown(e) {
+  if (e.key === 'Escape') { e.preventDefault(); closeDrawer(); return; }
+  if (e.key === 'Tab') trapFocus(e);
+}
+
+function trapFocus(e) {
+  const drawer = document.getElementById('nav-drawer');
+  const f = drawer.querySelectorAll('button:not([disabled])');
+  if (!f.length) return;
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
 }
 
 // opts: { seed, onResult, force }
@@ -104,9 +191,10 @@ function navigate(id, opts = {}) {
   state.currentId = id;
   history.replaceState(null, '', `#${id}`);
 
-  document.querySelectorAll('.tab').forEach((t) => {
-    t.classList.toggle('active', t.dataset.id === id);
+  document.querySelectorAll('.nav-item').forEach((it) => {
+    it.classList.toggle('active', it.dataset.id === id);
   });
+  updateCurrentGameLabel(id);
 
   const game = GAMES.find((g) => g.id === id) || GAMES[0];
   const area = document.getElementById('game-area');
@@ -379,9 +467,13 @@ function routeFromHash() {
 }
 
 async function init() {
-  buildTabs();
+  buildDrawer();
   renderUserArea();
   auth.onChange(renderUserArea);
+
+  document.getElementById('nav-toggle').onclick = toggleDrawer;
+  document.getElementById('nav-close').onclick = closeDrawer;
+  document.getElementById('nav-scrim').onclick = closeDrawer;
 
   document.querySelectorAll('.mode-btn').forEach((b) => {
     b.onclick = () => setMode(b.dataset.mode);
