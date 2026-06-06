@@ -11,10 +11,15 @@
 <body>
   <div id="app">
     <header class="topbar">
+      <button id="nav-toggle" class="nav-toggle" aria-label="Open games menu"
+              aria-controls="nav-drawer" aria-expanded="false">☰</button>
       <div class="brand">
         <span class="brand-icon">🎮</span>
         <h1>Brain Arcade</h1>
         <span class="brand-sub">🎉 Party Mode · 🎯 3D Arena · 23 games · head-to-head</span>
+        <span id="current-game" class="current-game" aria-live="polite">
+          <span class="cg-icon"></span><span class="cg-name"></span>
+        </span>
       </div>
       <div class="timers">
         <div class="timer-block">
@@ -34,7 +39,15 @@
       </div>
     </header>
 
-    <nav class="tabs" id="tabs" aria-label="Games"></nav>
+    <div id="nav-scrim" class="nav-scrim" hidden></div>
+    <nav id="nav-drawer" class="nav-drawer" aria-label="Games"
+         role="dialog" aria-modal="true" aria-hidden="true" tabindex="-1">
+      <div class="nav-drawer-head">
+        <span class="nav-drawer-title">🎮 Games</span>
+        <button id="nav-close" class="nav-close" aria-label="Close games menu">✕</button>
+      </div>
+      <div id="nav-list" class="nav-list"></div>
+    </nav>
 
     <main id="game-area" class="game-area" tabindex="-1"></main>
 
