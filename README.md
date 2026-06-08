@@ -1,18 +1,23 @@
 # 🎮 Brain Arcade
 
 A single-page tab arcade of **23 classic puzzle, word & game-theory games**, a
-**🎉 Party Mode of 10 Mario-Party-style minigames**, and a new **3D Action
-Arena** powered by Babylon.js — all in one zero-build SPA designed for GitHub
-Pages. Fully mobile-friendly with responsive layouts and touch-friendly targets.
+**🎉 Party Mode of 10 Mario-Party-style minigames**, and an **Action Arcade**
+(a Canvas-2D arcade shooter plus three Babylon.js 3D games) — all in one
+zero-build SPA designed for GitHub Pages. Fully mobile-friendly with responsive
+layouts and touch-friendly targets.
 
-## 🎯 3D Action Arena (Babylon.js)
+## 🎯 Action Arcade
 
-A four-game arcade of fast 3D action, lazy-loaded on first use (Babylon.js is
-fetched from a CDN only when you open one of these — the puzzle games don't pay
-that cost):
+A four-game arcade of fast action. **Food Fight Invaders** is pure Canvas-2D and
+runs anywhere (offline included); the three 3D games lazy-load Babylon.js from a
+CDN only when you open one, so the rest of the app never pays that cost:
 
-- **🚀 Missile Defense** — click anywhere in the sky to fire an interceptor;
-  the blast wipes out incoming ICBMs. Survive 4–6 escalating waves.
+- **👾 Food Fight Invaders** — a juicy, food-themed Space Invaders, made "10×
+  more powerful". Launch five recharging foods at the marching horde — 🧁 rapid
+  cupcakes, 🍕 3-way pizza, 🍔 piercing burgers, 🌮 homing tacos, and 🌶️
+  explosive chili — each on its own energy meter, so you toggle (keys 1–5) and
+  launch as they refill. Move ← →/drag, fire with Space/tap, catch ⚡⭐❤️
+  power-ups, chain combos, and survive 3–5 escalating waves.
 - **🛩 Sky Race** — third-person jet through a synth-wave corridor. WASD,
   arrows, or drag to steer; fly through cyan rings, dodge magenta pillars.
 - **🛡 Tank Duel** — top-down tank vs. computer in a walled arena. WASD to

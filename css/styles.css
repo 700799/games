@@ -905,3 +905,101 @@ canvas#tsp-canvas { display: block; width: 100%; background: #0f163a; border-rad
   .bjs-chip { padding: 4px 9px; font-size: 11px; }
   .bjs-chip-value { font-size: 12px; }
 }
+
+/* ============================================================
+   Food Fight Invaders — Canvas-2D arcade shooter
+   ============================================================ */
+.si-hud { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 10px; }
+.si-chip {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  padding: 6px 12px; border-radius: 999px;
+  background: var(--panel-2); border: 1px solid var(--border);
+  font-size: 12px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase;
+}
+.si-chip-label { opacity: 0.7; }
+.si-chip b { color: var(--accent); font-variant-numeric: tabular-nums; font-size: 14px; font-weight: 800; }
+.si-combo b { color: #ffd166; }
+.si-combo { animation: si-combo-pulse 0.5s ease infinite alternate; }
+.si-chip.hidden { display: none; }
+@keyframes si-combo-pulse { from { transform: scale(1); } to { transform: scale(1.08); } }
+
+.si-stage {
+  position: relative; display: flex; justify-content: center;
+  width: 100%; max-width: 620px; margin: 0 auto;
+}
+.si-canvas {
+  display: block; border-radius: 14px; touch-action: none; outline: none;
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+.si-flash {
+  position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%);
+  padding: 10px 22px; border-radius: 12px; pointer-events: none; white-space: nowrap;
+  font-size: clamp(22px, 5vw, 40px); font-weight: 900; letter-spacing: 2px; color: #fff;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.6);
+  background: linear-gradient(135deg, rgba(239,71,111,0.9), rgba(255,209,102,0.9));
+  border: 1px solid rgba(255,255,255,0.25);
+  animation: si-flash-in 0.25s ease-out both;
+}
+@keyframes si-flash-in {
+  from { transform: translate(-50%, -50%) scale(0.6); opacity: 0; }
+  to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+.si-flash.hidden { display: none; }
+
+.si-rack {
+  display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+  max-width: 620px; margin: 12px auto 0;
+}
+.si-weapon {
+  flex: 1 1 0; min-width: 88px; max-width: 116px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 8px 6px; border-radius: 12px; cursor: pointer;
+  background: var(--panel); border: 1px solid var(--border); color: var(--text);
+  transition: transform 0.08s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.si-weapon:hover { background: var(--panel-2); }
+.si-weapon.active {
+  border-color: var(--accent); background: var(--panel-2);
+  box-shadow: 0 0 0 2px rgba(255,209,102,0.35), var(--shadow); transform: translateY(-2px);
+}
+.si-weapon-top { display: flex; align-items: center; gap: 6px; }
+.si-weapon-emoji { font-size: 22px; line-height: 1; }
+.si-weapon-key {
+  font-size: 10px; font-weight: 700; color: var(--text-dim);
+  background: rgba(0,0,0,0.3); border-radius: 5px; padding: 1px 5px;
+}
+.si-weapon-name { font-size: 11px; color: var(--text-dim); font-weight: 600; }
+.si-bar { width: 100%; height: 6px; border-radius: 4px; background: rgba(0,0,0,0.35); overflow: hidden; }
+.si-bar-fill {
+  display: block; height: 100%; width: 100%; border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent)); transition: width 0.08s linear;
+}
+.si-weapon.charged .si-bar-fill { background: linear-gradient(90deg, var(--accent-3), var(--accent)); }
+
+.si-controls { display: none; } /* desktop uses keyboard / mouse */
+
+@media (max-width: 760px) {
+  .si-canvas { border-radius: 10px; }
+  .si-chip { padding: 5px 10px; font-size: 11px; }
+  .si-weapon { min-width: 0; padding: 6px 4px; }
+  .si-weapon-name { display: none; }
+  .si-weapon-emoji { font-size: 20px; }
+  .si-controls {
+    display: flex; gap: 10px; justify-content: center; align-items: center;
+    margin: 12px auto 0; max-width: 620px;
+  }
+  .si-ctl-btn {
+    flex: 1 1 0; min-height: 56px; font-size: 22px;
+    border-radius: 14px; border: 1px solid var(--border);
+    background: var(--panel-2); color: var(--text); cursor: pointer;
+    user-select: none; -webkit-user-select: none; touch-action: manipulation;
+  }
+  .si-ctl-btn:active { filter: brightness(1.2); transform: scale(0.97); }
+  .si-ctl-fire { flex: 1.6 1 0; background: linear-gradient(135deg, var(--accent-2), #ff7e9b); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .si-flash, .si-combo { animation: none; }
+  .si-bar-fill { transition: none; }
+}

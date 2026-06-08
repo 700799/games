@@ -34,16 +34,17 @@ import { donutHunt } from './games/donut-hunt.js';
 import { mastermind } from './games/mastermind.js';
 import { partyMode } from './games/party/index.js';
 
+// Action arcade
+import { spaceInvaders } from './games/action/space-invaders.js'; // Canvas-2D
 // 3D action games (Babylon.js, lazy-loaded on demand)
-import { missileDefense } from './games/action/missile-defense.js';
 import { skyRace } from './games/action/sky-race.js';
 import { tankDuel } from './games/action/tank-duel.js';
 import { photoSafari } from './games/action/photo-safari.js';
 
 export const GAMES = [
   { id: 'party',           icon: '🎉', name: 'Party Mode',           mount: partyMode },
-  // 3D Action Arena (Babylon.js)
-  { id: 'missile-defense', icon: '🚀', name: 'Missile Defense',      mount: missileDefense },
+  // Action Arcade
+  { id: 'space-invaders',  icon: '👾', name: 'Food Fight Invaders',  mount: spaceInvaders },
   { id: 'sky-race',        icon: '🛩', name: 'Sky Race',              mount: skyRace },
   { id: 'tank-duel',       icon: '🛡', name: 'Tank Duel',             mount: tankDuel },
   { id: 'photo-safari',    icon: '📷', name: 'Photo Safari',          mount: photoSafari },
@@ -75,7 +76,7 @@ export const GAMES = [
 // Drawer navigation: games grouped into ordered categories (covers every GAMES id).
 export const CATEGORIES = [
   { title: 'Party',           icon: '🎉', ids: ['party'] },
-  { title: '3D Action Arena', icon: '🎯', ids: ['missile-defense', 'sky-race', 'tank-duel', 'photo-safari'] },
+  { title: 'Action Arcade',   icon: '🎯', ids: ['space-invaders', 'sky-race', 'tank-duel', 'photo-safari'] },
   { title: 'Logic puzzles',   icon: '🧩', ids: ['hanoi', 'fifteen', 'water-jug', 'peg-solitaire', 'lights-out', 'nim', 'tsp'] },
   { title: 'Game theory',     icon: '🧠', ids: ['misere-nim', 'prisoner', 'stag-hunt', 'hawk-dove', 'ultimatum', 'centipede', 'public-goods', 'battle-sexes'] },
   { title: 'Word / Board / Strategy', icon: '🔤', ids: ['wordle', 'anagrams', 'chess', 'speed-chess', 'chinese-checkers', 'mahjong', 'donut-hunt', 'mastermind'] },
